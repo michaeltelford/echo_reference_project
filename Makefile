@@ -1,12 +1,12 @@
 .PHONY: help run debug test
 
-SHELL = /bin/bash
+SHELL = /bin/sh
 
 help:
 	@echo "Commands"
 	@echo "--------"
-	@echo "run   - Run the main.go file in production"
-	@echo "debug - Run the main.go file in debug via watcher"
+	@echo "run   - Run the app in production"
+	@echo "debug - Run the app in debug via watcher"
 	@echo "test  - Run the tests"
 
 run:
@@ -14,7 +14,8 @@ run:
 
 debug:
 	cd cmd && \
-	watcher main.go -watch github.com/michaeltelford/echo_reference_project
+	DEBUG=true watcher main.go \
+	-watch github.com/michaeltelford/echo_reference_project
 
 test:
 	go test ./...
