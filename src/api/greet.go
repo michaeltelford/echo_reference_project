@@ -8,24 +8,26 @@ import (
 )
 
 type (
-	// TODO: List any attributes here e.g. JSON, DB table columns etc.
-	greet struct {
+	// Greet resource containing attributes e.g. JSON, DB table columns etc.
+	Greet struct {
 		Message string `json:"message"`
 	}
 )
 
-func NewGreet() *greet {
-	return new(greet)
+// NewGreet returns a Greet pointer
+func NewGreet() *Greet {
+	return new(Greet)
 }
 
-func (g *greet) InitRoutes(group *echo.Group) {
-	group.GET("/greet", g.listGreeting)
-	group.GET("/greet/:name", g.getGreeting)
-	group.POST("/greet", g.createGreeting)
+// InitRoutes sets up routes for the Greet resource.
+func (g *Greet) InitRoutes(group *echo.Group) {
+	group.GET("/greet", g.list)
+	group.GET("/greet/:name", g.get)
+	group.POST("/greet", g.create)
 }
 
-// listGreeting takes a query param or default value and builds a message.
-func (g *greet) listGreeting(c echo.Context) error {
+// list takes a query param or default value and builds a message.
+func (g *Greet) list(c echo.Context) error {
 	var name string
 	if name = c.QueryParam("name"); name == "" {
 		name = "World!"
@@ -35,14 +37,14 @@ func (g *greet) listGreeting(c echo.Context) error {
 	return c.JSON(http.StatusOK, g)
 }
 
-// getGreeting takes a path param and builds a message.
-func (g *greet) getGreeting(c echo.Context) error {
+// get takes a path param and builds a message.
+func (g *Greet) get(c echo.Context) error {
 	g.Message = fmt.Sprintf("Hello, %s", c.Param("name"))
 	return c.JSON(http.StatusOK, g)
 }
 
-// createGreeting takes a json req body and builds a message.
-func (g *greet) createGreeting(c echo.Context) error {
+// create takes a json req body and builds a message.
+func (g *Greet) create(c echo.Context) error {
 	if err := c.Bind(g); err != nil {
 		return err
 	}
