@@ -3,7 +3,7 @@ package main
 import (
 	"strings"
 
-	"github.com/labstack/echo" // https://echo.labstack.com/guide
+	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 	"github.com/spf13/viper"
 

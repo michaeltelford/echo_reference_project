@@ -14,18 +14,20 @@ type (
 	}
 )
 
+// NewGreet returns a greet pointer
 func NewGreet() *greet {
 	return new(greet)
 }
 
+// Initialise any greeting routes.
 func (g *greet) InitRoutes(group *echo.Group) {
-	group.GET("/greet", g.listGreeting)
-	group.GET("/greet/:name", g.getGreeting)
-	group.POST("/greet", g.createGreeting)
+	group.GET("/greet", g.list)
+	group.GET("/greet/:name", g.get)
+	group.POST("/greet", g.create)
 }
 
-// listGreeting takes a query param or default value and builds a message.
-func (g *greet) listGreeting(c echo.Context) error {
+// list takes a query param or default value and builds a message.
+func (g *greet) list(c echo.Context) error {
 	var name string
 	if name = c.QueryParam("name"); name == "" {
 		name = "World!"
@@ -35,14 +37,14 @@ func (g *greet) listGreeting(c echo.Context) error {
 	return c.JSON(http.StatusOK, g)
 }
 
-// getGreeting takes a path param and builds a message.
-func (g *greet) getGreeting(c echo.Context) error {
+// get takes a path param and builds a message.
+func (g *greet) get(c echo.Context) error {
 	g.Message = fmt.Sprintf("Hello, %s", c.Param("name"))
 	return c.JSON(http.StatusOK, g)
 }
 
-// createGreeting takes a json req body and builds a message.
-func (g *greet) createGreeting(c echo.Context) error {
+// create takes a json req body and builds a message.
+func (g *greet) create(c echo.Context) error {
 	if err := c.Bind(g); err != nil {
 		return err
 	}
