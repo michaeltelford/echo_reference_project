@@ -1,4 +1,4 @@
-.PHONY: help run debug test
+.PHONY: help run debug test lint dep
 
 SHELL = /bin/sh
 
@@ -8,9 +8,11 @@ help:
 	@echo "run   - Run the app in production"
 	@echo "debug - Run the app in debug via watcher"
 	@echo "test  - Run the tests"
+	@echo "lint  - Run the linter"
+	@echo "dep   - Run the go dep tool"
 
 run:
-	go run cmd/main.go
+	DEBUG=false go run cmd/main.go
 
 debug:
 	cd cmd && \
@@ -19,3 +21,9 @@ debug:
 
 test:
 	go test ./...
+
+lint:
+	golint `go list ./...`
+
+dep:
+	dep ensure

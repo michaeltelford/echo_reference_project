@@ -3,11 +3,12 @@ package main
 import (
 	"strings"
 
+	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
+	_ "github.com/mattn/go-sqlite3"
 	"github.com/spf13/viper"
 
-	// TODO: Find & replace to use your $GOPATH
 	"github.com/michaeltelford/echo_reference_project/src/api"
 )
 
@@ -29,10 +30,20 @@ func init() {
 
 	e = echo.New()
 	e.Debug = viper.GetBool("DEBUG")
+
+	db := sqlx.MustConnect("sqlite3", ":memory:")
+	// TODO: Check if the below line is needed to create a table
+	db.MustExec(`CREATE TABLE user(
+					id 		INTEGER PRIMARY KEY AUTOINCREMENT 	NOT NULL,
+			   		name    TEXT    					  		NOT NULL,
+			   		age     INT     							NULL,
+					salary  REAL								NULL
+				)`)
+	api.DB = db
 }
 
 func main() {
-	// Ensure you declare your routes without a trailing Slash
+	// Ensure you declare your routes without a trailing slash
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
@@ -40,7 +51,7 @@ func main() {
 
 	app := e.Group("/v1")
 
-	api.NewGreet().InitRoutes(app)
+	api.NewUser().InitRoutes(app)
 	// TODO: Other resource routes go here...
 
 	e.Logger.Fatal(e.Start(host + port))
