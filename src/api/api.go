@@ -1,19 +1,20 @@
+//go:generate charlatan Database SQLResult
 package api
 
-import (
-	"database/sql"
-)
+import "database/sql"
 
-var (
-	// DB is a DB handle set at the api package level.
-	DB Database
-)
+// DB is a DB handle set at the api package level.
+var DB Database
 
-type (
-	// Database handle interface for easy mocking in tests.
-	Database interface {
-		Exec(query string, args ...interface{}) (sql.Result, error)
-		Get(dest interface{}, query string, args ...interface{}) error
-		Select(dest interface{}, query string, args ...interface{}) error
-	}
-)
+// Database handle interface sqlx package.
+type Database interface {
+	Exec(query string, args ...interface{}) (sql.Result, error)
+	Get(dest interface{}, query string, args ...interface{}) error
+	Select(dest interface{}, query string, args ...interface{}) error
+}
+
+// SQLResult interface matching database/sql package.
+type SQLResult interface {
+	LastInsertId() (int64, error)
+	RowsAffected() (int64, error)
+}

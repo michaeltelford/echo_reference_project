@@ -15,12 +15,18 @@ This branch sees the API connect to and query a `sqlite3` database.
 
 - To use the database, you'll need to ensure `sqlite3` is installed
 - To use `make debug` you'll need to ensure `watcher` is in your `$PATH` (https://github.com/canthefason/go-watcher)
+- To use `make convey` you'll need to ensure `goconvey` is in your `$PATH` (https://github.com/smartystreets/goconvey)
 - To use `make lint` you'll need to ensure `golint` is in your `$PATH` (https://github.com/golang/lint)
+- To use `make dep` you'll need to ensure `dep` in in your `$PATH` (`brew install dep`)
 
 ## Main Libraries
 
-- echo (https://echo.labstack.com/guide)
-- sqlx (https://github.com/jmoiron/sqlx)
+Type | Name | URL
+---- | ---- | ----
+Web | echo | https://echo.labstack.com/guide
+Config | viper | https://github.com/spf13/viper
+Database | sqlx | https://github.com/jmoiron/sqlx
+Test Mocks | charlatan | https://github.com/percolate/charlatan
 
 ## Usage
 
