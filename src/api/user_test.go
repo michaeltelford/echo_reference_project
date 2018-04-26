@@ -17,16 +17,14 @@ func TestMain(m *testing.M) {
 }
 
 func TestNewUser(t *testing.T) {
-	u := NewUser()
-	assert.NotNil(t, u)
-	assert.IsType(t, &User{}, u)
+	assert.IsType(t, &User{}, NewUser())
 }
 
 func TestListUsers(t *testing.T) {
 	expectedListUsersJSON := `[{"id":1,"name":"Joe Bloggs","age":23},{"id":2,"name":"John Smith","age":37}]`
 
 	e := echo.New()
-	req := httptest.NewRequest(echo.GET, "/user", nil)
+	req := httptest.NewRequest(echo.GET, "/users", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	u := new(User)
@@ -34,7 +32,7 @@ func TestListUsers(t *testing.T) {
 	if assert.NoError(t, u.list(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.Equal(t, expectedListUsersJSON, rec.Body.String())
+		assert.JSONEq(t, expectedListUsersJSON, rec.Body.String())
 	}
 }
 
@@ -42,7 +40,7 @@ func TestGetUser(t *testing.T) {
 	expectedUserJSON := `{"id":1,"name":"Joe Bloggs","age":23}`
 
 	e := echo.New()
-	req := httptest.NewRequest(echo.GET, "/user/1", nil)
+	req := httptest.NewRequest(echo.GET, "/users/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
 	u := new(User)
@@ -50,7 +48,7 @@ func TestGetUser(t *testing.T) {
 	if assert.NoError(t, u.get(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.Equal(t, expectedUserJSON, rec.Body.String())
+		assert.JSONEq(t, expectedUserJSON, rec.Body.String())
 	}
 }
 
@@ -59,7 +57,7 @@ func TestCreateUser(t *testing.T) {
 	expectedCreatedUserJSON := `{"id":1,"name":"Joe Bloggs","age":23}`
 
 	e := echo.New()
-	req := httptest.NewRequest(echo.POST, "/user", strings.NewReader(createUserJSON))
+	req := httptest.NewRequest(echo.POST, "/users", strings.NewReader(createUserJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -68,6 +66,6 @@ func TestCreateUser(t *testing.T) {
 	if assert.NoError(t, u.create(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.Equal(t, expectedCreatedUserJSON, rec.Body.String())
+		assert.JSONEq(t, expectedCreatedUserJSON, rec.Body.String())
 	}
 }

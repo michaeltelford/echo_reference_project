@@ -45,7 +45,7 @@ Now create a user with:
 
 ```sh
 $ curl -X POST \
->   http://localhost:8000/v1/user \
+>   http://localhost:8000/v1/users \
 >   -H 'Cache-Control: no-cache' \
 >   -H 'Content-Type: application/json' \
 >   -d '{
@@ -63,11 +63,11 @@ $ curl -X POST \
 }
 ```
 
-Now list all users with:
+Now retrieve the user with:
 
 ```sh
 $ curl -X GET \
->   http://localhost:8000/v1/user/1 \
+>   http://localhost:8000/v1/users/1 \
 >   -H 'Cache-Control: no-cache' | jq
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed

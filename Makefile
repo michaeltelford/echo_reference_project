@@ -6,18 +6,16 @@ help:
 	@echo "Commands"
 	@echo "--------"
 	@echo "run   - Run the app in production"
-	@echo "debug - Run the app in debug via watcher"
+	@echo "debug - Run the app in debug via watcher (live reloads)"
 	@echo "test  - Run the tests"
 	@echo "lint  - Run the linter"
 	@echo "dep   - Run the go dep tool"
 
 run:
-	DEBUG=false go run cmd/main.go
+	DEBUG=false go run main.go
 
 debug:
-	cd cmd && \
-	DEBUG=true watcher main.go \
-	-watch github.com/michaeltelford/echo_reference_project
+	DEBUG=true watcher
 
 test:
 	go test ./...

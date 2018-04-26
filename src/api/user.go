@@ -1,6 +1,8 @@
 package api
 
 import (
+	"net/http"
+
 	"github.com/labstack/echo"
 )
 
@@ -21,9 +23,9 @@ func NewUser() *User {
 
 // InitRoutes sets up any user based endpoints.
 func (u *User) InitRoutes(group *echo.Group) {
-	group.GET("/user", u.list)
-	group.GET("/user/:id", u.get)
-	group.POST("/user", u.create)
+	group.GET("/users", u.list)
+	group.GET("/users/:id", u.get)
+	group.POST("/users", u.create)
 }
 
 func (u *User) list(c echo.Context) error {
@@ -34,7 +36,7 @@ func (u *User) list(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(200, &users)
+	return c.JSON(http.StatusOK, &users)
 }
 
 func (u *User) get(c echo.Context) error {
@@ -45,7 +47,7 @@ func (u *User) get(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(200, user)
+	return c.JSON(http.StatusOK, user)
 }
 
 func (u *User) create(c echo.Context) error {
@@ -67,5 +69,5 @@ func (u *User) create(c echo.Context) error {
 	}
 	user.ID = id
 
-	return c.JSON(200, user)
+	return c.JSON(http.StatusOK, user)
 }
