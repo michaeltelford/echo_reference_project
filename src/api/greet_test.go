@@ -16,9 +16,7 @@ var (
 )
 
 func TestNewGreet(t *testing.T) {
-	g := NewGreet()
-	assert.NotNil(t, g)
-	assert.IsType(t, &Greet{}, g)
+	assert.IsType(t, &Greet{}, NewGreet())
 }
 
 func TestList(t *testing.T) {
@@ -30,7 +28,7 @@ func TestList(t *testing.T) {
 
 	if assert.NoError(t, g.list(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, `{"message":"Hello, World!"}`, rec.Body.String())
+		assert.JSONEq(t, `{"message":"Hello, World!"}`, rec.Body.String())
 	}
 }
 
@@ -45,7 +43,7 @@ func TestListWithQueryParam(t *testing.T) {
 
 	if assert.NoError(t, g.list(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, greetJSON, rec.Body.String())
+		assert.JSONEq(t, greetJSON, rec.Body.String())
 	}
 }
 
@@ -61,7 +59,7 @@ func TestGet(t *testing.T) {
 
 	if assert.NoError(t, g.get(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, greetJSON, rec.Body.String())
+		assert.JSONEq(t, greetJSON, rec.Body.String())
 	}
 }
 
@@ -75,6 +73,6 @@ func TestCreate(t *testing.T) {
 
 	if assert.NoError(t, g.create(c)) {
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, greetJSON, rec.Body.String())
+		assert.JSONEq(t, greetJSON, rec.Body.String())
 	}
 }
