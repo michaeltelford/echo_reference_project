@@ -1,0 +1,12 @@
+*_test.go
+.DS_Store
+.env
+.dockerignore
+.gitignore
+.git/
+docker-compose.yml
+Dockerfile
+LICENSE
+./main
+Makefile
+README.md

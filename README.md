@@ -9,11 +9,11 @@ Use this project as a reference or starter for your own applications.
 
 I've set up different repository branches to reflect what is provided for you out of the box. For example, the `master` branch contains only the echo web router with no database connection. Other branches however, provide such functionality. So take a look and pick the one that suits you best for your needs.
 
-This branch sees the API connect to and query a `sqlite3` database.
+This branch sees the API connect to and query a `postgres` database.
 
 ## Pre-requisites
 
-- To use the database, you'll need to ensure `sqlite3` is installed
+- To use the database and API, you'll need to ensure `docker` and `docker-compose` are installed
 - To use `make debug` you'll need to ensure `watcher` is in your `$PATH` (https://github.com/canthefason/go-watcher)
 - To use `make convey` you'll need to ensure `goconvey` is in your `$PATH` (https://github.com/smartystreets/goconvey)
 - To use `make lint` you'll need to ensure `golint` is in your `$PATH` (https://github.com/golang/lint)
