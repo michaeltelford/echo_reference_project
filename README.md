@@ -1,13 +1,12 @@
 # Echo Reference Project
 
-Starter project for developing RESTful API's using Go lang and the echo
-HTTP routing library.
+Starter project for developing RESTful API's using Go lang and the Echo HTTP web development framework.
 
 Use this project as a reference or starter for your own applications.
 
 ## Branches
 
-I've set up different repository branches to reflect what is provided for you out of the box. For example, the `master` branch contains only the echo web router with no database connection. Other branches however, provide such functionality. So take a look and pick the one that suits you best for your needs.
+I've set up different repository branches to reflect what is provided for you out of the box. For example, the `master` branch contains only the Echo web router with no database connection. Other branches however, provide such functionality. So take a look and pick the one that suits you best for your needs.
 
 This branch sees the API connect to and query a `postgres` database.
 
@@ -47,11 +46,11 @@ ____________________________________O/_______
 ⇨ http server started on [::]:8000
 ```
 
-Now create a user with:
+Now create an author with:
 
 ```sh
 $ curl -X POST \
->   http://localhost:8000/v1/users \
+>   http://localhost:8000/v1/authors \
 >   -H 'Cache-Control: no-cache' \
 >   -H 'Content-Type: application/json' \
 >   -d '{
@@ -69,11 +68,11 @@ $ curl -X POST \
 }
 ```
 
-Now retrieve the user with:
+Now retrieve the author with:
 
 ```sh
 $ curl -X GET \
->   http://localhost:8000/v1/users/1 \
+>   http://localhost:8000/v1/authors/1 \
 >   -H 'Cache-Control: no-cache' | jq
   % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
                                  Dload  Upload   Total   Spent    Left  Speed

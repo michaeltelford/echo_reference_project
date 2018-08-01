@@ -12,23 +12,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestNewUser(t *testing.T) {
-	assert.IsType(t, &User{}, NewUser())
+func TestNewAuthor(t *testing.T) {
+	assert.IsType(t, &Author{}, NewAuthor())
 }
 
-func TestListUsers(t *testing.T) {
-	expectedListUsersJSON := `[{"id":1,"name":"Joe Bloggs","age":23},{"id":2,"name":"John Smith","age":37}]`
+func TestListAuthors(t *testing.T) {
+	expectedListAuthorsJSON := `[{"id":1,"name":"Joe Bloggs","age":23},{"id":2,"name":"John Smith","age":37}]`
 
 	// Mock the Database func Select which is called by api's list func.
 	f := &FakeDatabase{
 		SelectHook: func(dest interface{}, query string, args ...interface{}) (ident1 error) {
 			v := reflect.ValueOf(dest).Elem()
-			v.Set(reflect.Append(v, reflect.ValueOf(User{
+			v.Set(reflect.Append(v, reflect.ValueOf(Author{
 				ID:     1,
 				Name:   "Joe Bloggs",
 				Age:    23,
 				Salary: 35000,
-			}), reflect.ValueOf(User{
+			}), reflect.ValueOf(Author{
 				ID:     2,
 				Name:   "John Smith",
 				Age:    37,
@@ -40,21 +40,21 @@ func TestListUsers(t *testing.T) {
 	DB = f
 
 	e := echo.New()
-	req := httptest.NewRequest(echo.GET, "/users", nil)
+	req := httptest.NewRequest(echo.GET, "/authors", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	u := new(User)
+	u := new(Author)
 
 	if assert.NoError(t, u.list(c)) {
 		f.AssertSelectCalledOnce(t)
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.JSONEq(t, expectedListUsersJSON, rec.Body.String())
+		assert.JSONEq(t, expectedListAuthorsJSON, rec.Body.String())
 	}
 }
 
-func TestGetUser(t *testing.T) {
-	expectedUserJSON := `{"id":1,"name":"Joe Bloggs","age":23}`
+func TestGetAuthor(t *testing.T) {
+	expectedAuthorJSON := `{"id":1,"name":"Joe Bloggs","age":23}`
 
 	// Mock the Database func Get which is called by api's get func.
 	f := &FakeDatabase{
@@ -70,22 +70,22 @@ func TestGetUser(t *testing.T) {
 	DB = f
 
 	e := echo.New()
-	req := httptest.NewRequest(echo.GET, "/users/1", nil)
+	req := httptest.NewRequest(echo.GET, "/authors/1", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	u := new(User)
+	u := new(Author)
 
 	if assert.NoError(t, u.get(c)) {
 		f.AssertGetCalledOnce(t)
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.JSONEq(t, expectedUserJSON, rec.Body.String())
+		assert.JSONEq(t, expectedAuthorJSON, rec.Body.String())
 	}
 }
 
-func TestCreateUser(t *testing.T) {
-	createUserJSON := `{"name":"Joe Bloggs","age":23,"salary":25000}`
-	expectedCreatedUserJSON := `{"id":1,"name":"Joe Bloggs","age":23}`
+func TestCreateAuthor(t *testing.T) {
+	createAuthorJSON := `{"name":"Joe Bloggs","age":23,"salary":25000}`
+	expectedCreatedAuthorJSON := `{"id":1,"name":"Joe Bloggs","age":23}`
 
 	// Mock the Database func Exec which is called by api's create func.
 	f := &FakeDatabase{
@@ -106,16 +106,16 @@ func TestCreateUser(t *testing.T) {
 	DB = f
 
 	e := echo.New()
-	req := httptest.NewRequest(echo.POST, "/users", strings.NewReader(createUserJSON))
+	req := httptest.NewRequest(echo.POST, "/authors", strings.NewReader(createAuthorJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	u := new(User)
+	u := new(Author)
 
 	if assert.NoError(t, u.create(c)) {
 		f.AssertExecCalledOnce(t)
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, "application/json; charset=UTF-8", rec.Header().Get(echo.HeaderContentType))
-		assert.JSONEq(t, expectedCreatedUserJSON, rec.Body.String())
+		assert.JSONEq(t, expectedCreatedAuthorJSON, rec.Body.String())
 	}
 }

@@ -1,15 +1,15 @@
 package main
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-	_ "github.com/mattn/go-sqlite3"
-	"github.com/spf13/viper"
-
+	_ "github.com/lib/pq"
 	"github.com/michaeltelford/echo_reference_project/src/api"
+	"github.com/spf13/viper"
 )
 
 var (
@@ -31,14 +31,18 @@ func init() {
 	e = echo.New()
 	e.Debug = viper.GetBool("DEBUG")
 
-	db := sqlx.MustConnect("sqlite3", ":memory:")
+	db := sqlx.MustConnect("postgres", buildConnectionString())
+
 	// TODO: Check if the below line is needed to create a table
-	db.MustExec(`CREATE TABLE user(
-					id 		INTEGER PRIMARY KEY AUTOINCREMENT 	NOT NULL,
-			   		name    TEXT    					  		NOT NULL,
-			   		age     INT     							NULL,
-					salary  REAL								NULL
-				)`)
+	db.MustExec(
+		`CREATE TABLE IF NOT EXISTS authors (
+			id SERIAL,
+			name TEXT NOT NULL,
+			age INT NULL,
+			salary REAL NULL
+		);`,
+	)
+
 	api.DB = db
 }
 
@@ -51,7 +55,7 @@ func main() {
 
 	app := e.Group("/v1")
 
-	api.NewUser().InitRoutes(app)
+	api.NewAuthor().InitRoutes(app)
 	// TODO: Other resource routes go here...
 
 	e.Logger.Fatal(e.Start(host + port))
@@ -62,4 +66,15 @@ func addPortColonPrefix(port string) string {
 		return port
 	}
 	return ":" + port
+}
+
+func buildConnectionString() string {
+	return fmt.Sprintf(
+		"postgres://%s:%s@%s:%d/%s?sslmode=disable",
+		viper.GetString("DB_USERNAME"),
+		viper.GetString("DB_PASSWORD"),
+		viper.GetString("DB_HOST"),
+		viper.GetInt("DB_PORT"),
+		viper.GetString("DB_NAME"),
+	)
 }
