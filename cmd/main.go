@@ -33,16 +33,6 @@ func init() {
 
 	db := sqlx.MustConnect("postgres", buildConnectionString())
 
-	// TODO: Check if the below line is needed to create a table
-	db.MustExec(
-		`CREATE TABLE IF NOT EXISTS authors (
-			id SERIAL,
-			name TEXT NOT NULL,
-			age INT NULL,
-			salary REAL NULL
-		);`,
-	)
-
 	api.DB = db
 }
 

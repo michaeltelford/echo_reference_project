@@ -12,11 +12,12 @@ This branch sees the API connect to and query a `postgres` database.
 
 ## Pre-requisites
 
-- To use the database and API, you'll need to ensure `docker` and `docker-compose` are installed
-- To use `make debug` you'll need to ensure `watcher` is in your `$PATH` (https://github.com/canthefason/go-watcher)
-- To use `make convey` you'll need to ensure `goconvey` is in your `$PATH` (https://github.com/smartystreets/goconvey)
-- To use `make lint` you'll need to ensure `golint` is in your `$PATH` (https://github.com/golang/lint)
-- To use `make dep` you'll need to ensure `dep` in in your `$PATH` (`brew install dep`)
+- To use `make run` you'll need to install `docker` and `docker-compose`
+- To use `make convey` you'll need to `go get github.com/smartystreets/goconvey`
+- To use `make lint` you'll need to `go get github.com/golang/lint`
+- To use `make dep` you'll need to run `brew install dep`
+- To use `make generate` you'll need to `go get github.com/percolate/charlatan`
+- To use `make migrate` you'll need to install [golang-migrate](https://github.com/golang-migrate/migrate/tree/master/cli)
 
 ## Main Libraries
 
