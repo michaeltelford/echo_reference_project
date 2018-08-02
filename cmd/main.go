@@ -19,6 +19,7 @@ var (
 )
 
 func init() {
+	viper.SetDefault("VERSION", "1")
 	viper.SetDefault("HOST", "0.0.0.0")
 	viper.SetDefault("PORT", "8000")
 	viper.SetDefault("DEBUG", false)
@@ -37,13 +38,14 @@ func init() {
 }
 
 func main() {
-	// Ensure you declare your routes without a trailing slash
+	// Ensure you declare your routes without a trailing slash.
 	e.Pre(middleware.RemoveTrailingSlash())
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.Secure())
 
-	app := e.Group("/v1")
+	version := fmt.Sprint("/v", viper.GetString("VERSION"))
+	app := e.Group(version)
 
 	api.NewAuthor().InitRoutes(app)
 	// TODO: Other resource routes go here...

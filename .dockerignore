@@ -8,5 +8,7 @@ docker-compose.yml
 Dockerfile
 LICENSE
 ./main
+./api
+bin/
 Makefile
 README.md

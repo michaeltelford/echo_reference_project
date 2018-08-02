@@ -1,8 +1,6 @@
 FROM golang:1.10
 
 WORKDIR /go/src/github.com/michaeltelford/echo_reference_project
-COPY . .
+COPY bin/api bin/api
 
-RUN go build main.go
-
-CMD ["./main"]
+CMD ["bin/api"]

@@ -8,11 +8,11 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=app
+      - POSTGRES_DB=api
   api:
     container_name: api
-    build: .
-    command: bash -c "go get github.com/canthefason/go-watcher && go install github.com/canthefason/go-watcher/cmd/watcher && watcher"
+    image: echo_reference_project:latest
+    command: bash -c "sleep 1; bin/migrate -database "postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable" -path "db/migrations" up && bin/watcher"
     volumes:
       - .:/go/src/github.com/michaeltelford/echo_reference_project
     ports:
@@ -21,11 +21,12 @@ services:
     depends_on:
       - db
     environment:
+      - VERSION=1
+      - DEBUG=true
       - HOST=0.0.0.0
       - PORT=8000
-      - DEBUG=true
       - DB_HOST=db
       - DB_PORT=5432
       - DB_USERNAME=postgres
       - DB_PASSWORD=postgres
-      - DB_NAME=app
+      - DB_NAME=api
