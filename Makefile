@@ -1,13 +1,10 @@
 .PHONY: help build run test convey lint dep generate migrate alias_migrate
 
-# If VERSION isn't in ENV then use 'latest' docker tag.
-VERSION ?= latest
-
 help:
 	@echo ""
 	@echo "Commands"
 	@echo "--------"
-	@echo "build         - Builds go binary and docker image"
+	@echo "build         - Builds go binary and docker images"
 	@echo "run           - Run the api in docker (with live reloads)"
 	@echo "test          - Run the tests"
 	@echo "convey        - Run the tests in a UI (retest on file change)"
@@ -20,9 +17,10 @@ help:
 
 build:
 	GOOS=linux GOARCH=amd64 go build -o bin/api main.go
-	docker build -t echo_reference_project:latest .
+	docker build -t echo_reference_project:latest -f Dockerfile .
+	docker build -t echo_reference_project:dev -f Dockerfile-dev .
 
-run: build
+run:
 	docker-compose up
 
 test:

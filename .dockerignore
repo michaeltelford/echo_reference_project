@@ -1,14 +1,3 @@
-*_test.go
-.DS_Store
-.env
-.dockerignore
-.gitignore
-.git/
-docker-compose.yml
-Dockerfile
-LICENSE
-./main
-./api
-bin/
-Makefile
-README.md
+# Ignore everything except the bin/api executable.
+*
+!bin/api

@@ -1,32 +1,32 @@
-version: '2'
+version: '2.1'
 services:
   db:
     container_name: postgres
     image: postgres:10
     ports:
-      - "5432:5432"
+      - ${DB_PORT:-5432}:${DB_PORT:-5432}
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=api
+      - POSTGRES_USER=${DB_USERNAME:-postgres}
+      - POSTGRES_PASSWORD=${DB_PASSWORD:-postgres}
+      - POSTGRES_DB=${DB_NAME:-api}
   api:
     container_name: api
-    image: echo_reference_project:latest
-    command: bash -c "sleep 1; bin/migrate -database "postgres://${DB_USERNAME}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}?sslmode=disable" -path "db/migrations" up && bin/watcher"
+    image: echo_reference_project:dev
+    command: bin/watcher
     volumes:
       - .:/go/src/github.com/michaeltelford/echo_reference_project
     ports:
-      - "80:8000"
-      - "8000:8000"
+      - 80:${PORT:-8000}
+      - ${PORT:-8000}:${PORT:-8000}
     depends_on:
       - db
     environment:
-      - VERSION=1
-      - DEBUG=true
-      - HOST=0.0.0.0
-      - PORT=8000
+      - VERSION=${VERSION:-1}
+      - DEBUG=${DEBUG:-true}
+      - HOST=${HOST:-0.0.0.0}
+      - PORT=${PORT:-8000}
       - DB_HOST=db
-      - DB_PORT=5432
-      - DB_USERNAME=postgres
-      - DB_PASSWORD=postgres
-      - DB_NAME=api
+      - DB_PORT=${DB_PORT:-5432}
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - DB_NAME=${DB_NAME:-api}
